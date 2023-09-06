@@ -1,13 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php require_once('_includes/style.php'); ?>
+        <script>
+            function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            /* Loop through a collection of all HTML elements: */
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                /*search for elements with a certain atrribute:*/
+                file = elmnt.getAttribute("include-html");
+                if (file) {
+                /* Make an HTTP request using the attribute value as the file name: */
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4) {
+                    if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                    if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                    /* Remove the attribute, and call this function once more: */
+                    elmnt.removeAttribute("include-html");
+                    includeHTML();
+                    }
+                }
+                xhttp.open("GET", file, true);
+                xhttp.send();
+                /* Exit the function: */
+                return;
+                }
+            }
+            }
+        </script>
+        <div include-html="_includes/style.html"></div>
     </head>
     <body id="page-top">
 
-        <?php require_once('_includes/nav.php'); ?>
+        <div include-html="_includes/nav.html"></div>
+        <div include-html="_includes/header.html"></div>
 
-        <?php require_once('_includes/header.php'); ?>
 
         <!-- Services-->
         <section class="page-section" id="services">
@@ -562,8 +591,12 @@
                 </div>
             </div>
         </div>
+        
+        <div include-html="_includes/script.html"></div>
 
-        <?php require_once('_includes/script.php'); ?>
+        <script>
+            includeHTML();
+        </script>
         
     </body>
 </html>
