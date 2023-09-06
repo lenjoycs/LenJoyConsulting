@@ -1,3 +1,7 @@
+<?php
+    //set language
+    $LANG = isset($_COOKIE['LANGUAGE']) ? $_COOKIE['LANGUAGE'] : 'EN';
+?>
 
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
